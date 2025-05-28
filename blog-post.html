@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post: Understanding C++ Data Structures</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;600&family=Segoe+UI:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 300;
+            background-color: #f9fafb;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+        .nav-link:hover {
+            color: #f97316;
+            transition: color 0.3s ease;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 40vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 10%, transparent 60%),
+                        conic-gradient(
+                            rgba(16, 185, 129, 0.4) 0deg,
+                            rgba(249, 115, 22, 0.3) 90deg,
+                            rgba(16, 185, 129, 0.4) 180deg,
+                            rgba(249, 115, 22, 0.3) 270deg,
+                            rgba(16, 185, 129, 0.4) 360deg
+                        );
+            animation: swirl 15s ease-in-out infinite;
+            z-index: -1;
+        }
+        @keyframes swirl {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 0.7;
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+                opacity: 0.9;
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 0.7;
+            }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 125, 0.2);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-image: linear-gradient(to right, #f97316, #10b981) 1;
+        }
+        .tech-tag {
+            display: inline-block;
+            background: linear-gradient(45deg, #ecfdf5, #fefcbf);
+            color: #065f46;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-right: 8px;
+            margin-top: 8px;
+        }
+        .icon-hover:hover {
+            color: #f97316;
+            transform: scale(1.2);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar py-4">
+        <div class="container mx-auto flex justify-between items-center px-4 sm:px-6">
+            <a href="index.html" class="text-xl sm:text-2xl font-bold text-green-600">MR</a>
+            <div class="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-sm sm:text-base">
+                <a href="index.html#home" class="nav-link text-gray-700">Home</a>
+                <a href="index.html#about" class="nav-link text-gray-700">About</a>
+                <a href="index.html#skills" class="nav-link text-gray-700">Skills</a>
+                <a href="index.html#projects" class="nav-link text-gray-700">Projects</a>
+                <a href="index.html#writing" class="nav-link text-gray-700">Writing & Creative Works</a>
+                <a href="index.html#hobbies" class="nav-link text-gray-700">Hobbies</a>
+                <a href="index.html#contact" class="nav-link text-gray-700">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Post Hero Section -->
+    <section id="blog-hero" class="hero-bg">
+        <div class="container mx-auto px-4 sm:px-6 text-center py-8 sm:py-12">
+            <h1 class="text-2xl sm:text-4xl font-bold text-gray-800">Understanding C++ Data Structures</h1>
+            <p class="text-base sm:text-lg text-gray-600 mt-2">A Beginner-Friendly Guide</p>
+            <p class="text-sm sm:text-base text-gray-500 mt-2">By M. Reyan Riaz | May 28, 2025</p>
+        </div>
+    </section>
+
+    <!-- Blog Post Content Section -->
+    <section id="blog-content" class="py-16 sm:py-20 bg-white">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="card p-4 sm:p-6 shadow-lg max-w-4xl mx-auto">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Introduction to Data Structures</h2>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                    Data structures are the backbone of efficient programming. In C++, they allow us to organize and manipulate data effectively. This guide introduces two fundamental data structures—linked lists and binary trees—and provides simple examples to help beginners get started.
+                </p>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mt-6">Linked Lists</h3>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-2">
+                    A linked list is a linear data structure where elements, called nodes, are linked using pointers. Each node contains data and a pointer to the next node. Linked lists are useful for dynamic data where the size changes frequently.
+                </p>
+                <pre class="bg-gray-100 p-4 rounded-lg mt-4 text-sm sm:text-base overflow-x-auto">
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+class LinkedList {
+public:
+    Node* head;
+    LinkedList() : head(nullptr) {}
+    
+    void append(int data) {
+        Node* newNode = new Node(data);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* current = head;
+        while (current->next) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+};
+                </pre>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-4">
+                    The code above defines a simple singly linked list. The <code>append</code> function adds a node to the end of the list. Try implementing functions like <code>delete</code> or <code>search</code> to enhance your understanding!
+                </p>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mt-6">Binary Trees</h3>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-2">
+                    A binary tree is a hierarchical structure where each node has at most two children: left and right. It’s ideal for tasks like searching and hierarchical data representation.
+                </p>
+                <pre class="bg-gray-100 p-4 rounded-lg mt-4 text-sm sm:text-base overflow-x-auto">
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class BinaryTree {
+public:
+    TreeNode* root;
+    BinaryTree() : root(nullptr) {}
+    
+    void insert(int data) {
+        if (!root) {
+            root = new TreeNode(data);
+            return;
+        }
+        // Implement insertion logic (e.g., BST)
+    }
+};
+                </pre>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-4">
+                    This code sets up a basic binary tree. For a binary search tree (BST), you’d add logic to insert nodes based on their values. Experiment with traversal methods like in-order or pre-order to explore the tree’s structure.
+                </p>
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mt-6">Conclusion</h3>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-2">
+                    Mastering data structures like linked lists and binary trees opens the door to efficient problem-solving in C++. Start with small projects, like building a list-based to-do app or a tree-based search tool, to solidify your skills. Keep practicing, and you’ll find data structures become second nature!
+                </p>
+                <div class="mt-6">
+                    <a href="index.html#writing" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">Back to Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 sm:py-20 bg-gray-100">
+        <div class="container mx-auto px-4 sm:px-6">
+            <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 text-center mb-8 sm:mb-10">Contact Me</h2>
+            <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
+                <a href="mailto:reyanriaz635@gmail.com" class="text-gray-600 text-center">
+                    <i class="fas fa-envelope text-2xl sm:text-3xl mb-2 icon-hover"></i>
+                    <p class="text-sm sm:text-base">Email</p>
+                </a>
+                <a href="https://github.com/reyanriaz" class="text-gray-600 text-center">
+                    <i class="fab fa-github text-2xl sm:text-3xl mb-2 icon-hover"></i>
+                    <p class="text-sm sm:text-base">GitHub</p>
+                </a>
+                <a href="https://linkedin.com/in/muhammad-reyanriaz/" target="_blank" rel="noopener noreferrer" class="text-gray-600 text-center">
+                    <i class="fab fa-linkedin text-2xl sm:text-3xl mb-2 icon-hover"></i>
+                    <p class="text-sm sm:text-base">LinkedIn</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navbar links
+        try {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        console.error('Target section not found: ' + this.getAttribute('href'));
+                    }
+                });
+            });
+        } catch (e) {
+            console.error('Smooth Scrolling Error:', e);
+        }
+
+        // GSAP Animations with fallback
+        try {
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.from("#blog-hero h1", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+                gsap.from("#blog-hero p", { opacity: 0, y: 20, duration: 1, stagger: 0.3, delay: 1 });
+                gsap.from(".navbar", { opacity: 0, y: -50, duration: 1 });
+                gsap.utils.toArray("section").forEach((section, i) => {
+                    gsap.from(section.querySelectorAll("h2, h3, p, .card, pre, .icon-hover"), {
+                        scrollTrigger: {
+                            trigger: section,
+                            start: "top 80%",
+                            toggleActions: "play none play none"
+                        },
+                        opacity: 0,
+                        x: i % 2 === 0 ? -50 : 50,
+                        duration: 0.8,
+                        stagger: 0.2
+                    });
+                });
+            } else {
+                console.error('GSAP or ScrollTrigger not loaded');
+            }
+        } catch (e) {
+            console.error('GSAP Animation Error:', e);
+        }
+    </script>
+</body>
+</html>
