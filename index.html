@@ -65,18 +65,6 @@
             50% { transform: rotate(180deg) scale(1.2); opacity: 0.9; }
             100% { transform: rotate(360deg) scale(1); opacity: 0.7; }
         }
-        .card {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            border: 1px solid rgba(16, 185, 125, 0.2);
-            transition: all 0.3s ease;
-            display: block;
-        }
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border-image: linear-gradient(to right, #f97316, #10b981) 1;
-        }
         .tech-tag {
             display: inline-block;
             background: linear-gradient(45deg, #ecfdf5, #fefcbf);
@@ -92,9 +80,10 @@
             transform: scale(1.2);
             transition: all 0.3s ease;
         }
-        #writing-cards {
-            display: grid;
-            visibility: visible !important;
+        .blog-icon {
+            color: #10b981;
+            margin-right: 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -202,40 +191,16 @@
     <section id="writing" class="py-16 sm:py-20 bg-gray-100">
         <div class="container mx-auto px-4 sm:px-6">
             <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 text-center mb-4 sm:mb-6">Writing & Creative Works</h2>
-            <div id="writing-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-                <div class="card p-4 sm:p-6 shadow-lg">
-                    <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Blog Post: Understanding C++ Data Structures</h3>
-                    <p class="text-gray-600 text-sm sm:text-base mt-2">A beginner-friendly guide on implementing linked lists, binary trees, and nested loops in C++.</p>
-                    <div class="mt-4">
-                        <a href="./blog-post.html" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">Read More</a>
-                    </div>
-                </div>
-                <div class="card p-4 sm:p-6 shadow-lg">
-                    <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Reflective Essay: Embracing Challenges in My Coding Journey</h3>
-                    <p class="text-gray-600 text-sm sm:text-base mt-2">A personal reflection on overcoming obstacles in learning to code and growing as a computer science student.</p>
-                    <div class="mt-4">
-                        <a href="#essay" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">Read More</a>
-                    </div>
-                </div>
-                <div class="card p-4 sm:p-6 shadow-lg">
-                    <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Digital Art: Abstract Tech Patterns</h3>
-                    <p class="text-gray-600 text-sm sm:text-base mt-2">A collection of digital artwork inspired by code and technology, created using graphic design tools.</p>
-                    <div class="mt-4">
-                        <a href="#" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">View Gallery</a>
-                    </div>
+            <div class="flex flex-wrap justify-center gap-8 sm:gap-12">
+                <div class="text-center">
+                    <a href="/your-repo-name/blog-post.html" target="_blank" class="text-gray-600">
+                        <i class="fas fa-book-open text-3xl sm:text-4xl text-green-600 mb-3 icon-hover blog-icon"></i>
+                        <p class="text-gray-600 text-sm sm:text-base">Blog Post: C++ Data Structures</p>
+                    </a>
+                    <!-- Fallback for user site -->
+                    <a href="./blog-post.html" target="_blank" class="text-gray-600 text-sm sm:text-base">Fallback Link</a>
                 </div>
             </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 text-center mb-4 mt-8">Embracing Challenges in My Coding Journey</h3>
-            <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
-                My journey into computer science began with a mix of curiosity and trepidation. As a first-year student at Bahria University Islamabad, I was eager to dive into programming, but the complexity of C++ and Assembly Language often felt overwhelming. My first significant challenge came during a data structures course, where implementing a linked list from scratch tested my patience and problem-solving skills. Syntax errors and segmentation faults became frequent hurdles, but each debugging session taught me resilience and the importance of breaking problems into manageable parts.
-            </p>
-            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-4">
-                Working on group projects, like our Weather App in C#, introduced me to the power of collaboration. Coordinating with peers, managing version control with GitHub, and integrating APIs showed me that coding is as much about communication as it is about logic. These experiences shifted my perspective: mistakes were not failures but opportunities to learn. Exploring machine learning concepts further fueled my passion, as I began to see how code could solve real-world problems, from weather predictions to intelligent systems.
-            </p>
-            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mt-4">
-                Reflecting on my journey, I’ve grown to embrace challenges as integral to growth. Each project, whether a simple HTML webpage or a complex algorithm, has built my confidence and curiosity. As I continue my studies, I’m excited to explore backend development and machine learning, knowing that every obstacle is a step toward becoming a better engineer.
-            </p>
-            <p class="text-gray-600 text-center mt-4 sm:mt-6 text-sm sm:text-base">Note: Other links are placeholders. Update with actual URLs or content (e.g., Medium, GitHub).</p>
         </div>
     </section>
 
@@ -305,7 +270,7 @@
             gsap.from("#home p", { opacity: 0, y: 20, duration: 1, stagger: 0.3, delay: 1 });
             gsap.from(".navbar", { opacity: 0, y: -50, duration: 1 });
             gsap.utils.toArray("section").forEach((section, i) => {
-                gsap.from(section.querySelectorAll("h2, p, .card, .icon-hover"), {
+                gsap.from(section.querySelectorAll("h2, p, .icon-hover, .blog-icon"), {
                     scrollTrigger: {
                         trigger: section,
                         start: "top 80%",
@@ -323,17 +288,23 @@
 
         // Debug Writing Section
         window.addEventListener('load', () => {
-            const writingCards = document.getElementById('writing-cards');
-            if (!writingCards || writingCards.children.length === 0) {
-                console.error('Writing & Creative Works section is empty or not loaded');
+            const writingSection = document.getElementById('writing');
+            if (!writingSection) {
+                console.error('Writing & Creative Works section not found in DOM');
+                return;
+            }
+            console.log('Writing & Creative Works section found');
+            const blogLink = writingSection.querySelector('a[href="/your-repo-name/blog-post.html"], a[href="./blog-post.html"]');
+            if (blogLink) {
+                console.log('Blog post link found:', blogLink.href);
+                fetch('/your-repo-name/blog-post.html')
+                    .then(res => console.log('Primary blog-post.html fetch:', res.ok ? 'Found (200)' : `Not found (${res.status})`))
+                    .catch(err => console.error('Error fetching primary blog-post.html:', err));
+                fetch('./blog-post.html')
+                    .then(res => console.log('Fallback blog-post.html fetch:', res.ok ? 'Found (200)' : `Not found (${res.status})`))
+                    .catch(err => console.error('Error fetching fallback blog-post.html:', err));
             } else {
-                console.log('Writing & Creative Works section loaded with', writingCards.children.length, 'cards');
-                const readMoreLink = writingCards.querySelector('a[href="./blog-post.html"]');
-                if (readMoreLink) {
-                    console.log('Read More link found for blog-post.html');
-                } else {
-                    console.error('Read More link for blog-post.html not found');
-                }
+                console.error('Blog post link not found in Writing section');
             }
         });
     </script>
