@@ -1,55 +1,15 @@
 ```html
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M. Reyan Riaz - Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;600&family=Segoe+UI:wght@300&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css?v=20250528" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css?v=20250528" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;600&family=Segoe+UI:wght@300&display=swap&v=20250528" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js?v=20250528"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js?v=20250528"></script>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -77,7 +37,7 @@
             background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%);
             position: relative;
             overflow: hidden;
-            min-height: 60vh; /* Reduced from min-h-screen */
+            min-height: 60vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,24 +61,16 @@
             z-index: -1;
         }
         @keyframes swirl {
-            0% {
-                transform: rotate(0deg) scale(1);
-                opacity: 0.7;
-            }
-            50% {
-                transform: rotate(180deg) scale(1.2);
-                opacity: 0.9;
-            }
-            100% {
-                transform: rotate(360deg) scale(1);
-                opacity: 0.7;
-            }
+            0% { transform: rotate(0deg) scale(1); opacity: 0.7; }
+            50% { transform: rotate(180deg) scale(1.2); opacity: 0.9; }
+            100% { transform: rotate(360deg) scale(1); opacity: 0.7; }
         }
         .card {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 12px;
             border: 1px solid rgba(16, 185, 125, 0.2);
             transition: all 0.3s ease;
+            display: block;
         }
         .card:hover {
             transform: translateY(-10px) scale(1.02);
@@ -139,6 +91,10 @@
             color: #f97316;
             transform: scale(1.2);
             transition: all 0.3s ease;
+        }
+        #writing-cards {
+            display: grid;
+            visibility: visible !important;
         }
     </style>
 </head>
@@ -246,12 +202,12 @@
     <section id="writing" class="py-16 sm:py-20 bg-gray-100">
         <div class="container mx-auto px-4 sm:px-6">
             <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 text-center mb-4 sm:mb-6">Writing & Creative Works</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+            <div id="writing-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
                 <div class="card p-4 sm:p-6 shadow-lg">
                     <h3 class="text-lg sm:text-xl font-semibold text-gray-800">Blog Post: Understanding C++ Data Structures</h3>
-                    <p class="text-gray-600 text-sm sm:text-base mt-2">A beginner-friendly guide on implementing linked lists and binary trees in C++.</p>
+                    <p class="text-gray-600 text-sm sm:text-base mt-2">A beginner-friendly guide on implementing linked lists, binary trees, and nested loops in C++.</p>
                     <div class="mt-4">
-                        <a href="blog-post.html" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">Read More</a>
+                        <a href="./blog-post.html" class="text-green-600 hover:text-orange-500 text-sm sm:text-base">Read More</a>
                     </div>
                 </div>
                 <div class="card p-4 sm:p-6 shadow-lg">
@@ -269,7 +225,7 @@
                     </div>
                 </div>
             </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 text-center mb-4">Embracing Challenges in My Coding Journey</h3>
+            <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 text-center mb-4 mt-8">Embracing Challenges in My Coding Journey</h3>
             <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
                 My journey into computer science began with a mix of curiosity and trepidation. As a first-year student at Bahria University Islamabad, I was eager to dive into programming, but the complexity of C++ and Assembly Language often felt overwhelming. My first significant challenge came during a data structures course, where implementing a linked list from scratch tested my patience and problem-solving skills. Syntax errors and segmentation faults became frequent hurdles, but each debugging session taught me resilience and the importance of breaking problems into manageable parts.
             </p>
@@ -309,10 +265,13 @@
         <div class="container mx-auto px-4 sm:px-6">
             <h2 class="text-2xl sm:text-4xl font-bold text-gray-800 text-center mb-8 sm:mb-10">Contact Me</h2>
             <div class="flex flex-wrap justify-center gap-6 sm:gap-8">
-                <a href="mailto:reyanriaz635@gmail.com" class="text-gray-600 text-center">
-                    <i class="fas fa-envelope text-2xl sm:text-3xl mb-2 icon-hover"></i>
-                    <p class="text-sm sm:text-base">Email</p>
-                </a>
+                <div class="text-center">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=reyanriaz635@gmail.com" target="_blank" class="text-gray-600" onclick="console.log('Email link clicked');">
+                        <i class="fas fa-envelope text-2xl sm:text-3xl mb-2 icon-hover"></i>
+                        <p class="text-sm sm:text-base">Email</p>
+                    </a>
+                    <p class="text-sm sm:text-base text-gray-600">reyanriaz635@gmail.com</p>
+                </div>
                 <a href="https://github.com/reyanriaz" class="text-gray-600 text-center">
                     <i class="fab fa-github text-2xl sm:text-3xl mb-2 icon-hover"></i>
                     <p class="text-sm sm:text-base">GitHub</p>
@@ -327,48 +286,56 @@
 
     <script>
         // Smooth scrolling for navbar links
-        try {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                        console.error('Target section not found: ' + this.getAttribute('href'));
-                    }
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.error('Target section not found: ' + this.getAttribute('href'));
+                }
+            });
+        });
+
+        // GSAP Animations
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.from("#home img", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
+            gsap.from("#home h1", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
+            gsap.from("#home p", { opacity: 0, y: 20, duration: 1, stagger: 0.3, delay: 1 });
+            gsap.from(".navbar", { opacity: 0, y: -50, duration: 1 });
+            gsap.utils.toArray("section").forEach((section, i) => {
+                gsap.from(section.querySelectorAll("h2, p, .card, .icon-hover"), {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 80%",
+                        toggleActions: "play none play none"
+                    },
+                    opacity: 0,
+                    x: i % 2 === 0 ? -50 : 50,
+                    duration: 0.8,
+                    stagger: 0.2
                 });
             });
-        } catch (e) {
-            console.error('Smooth Scrolling Error:', e);
+        } else {
+            console.error('GSAP or ScrollTrigger not loaded');
         }
 
-        // GSAP Animations with fallback
-        try {
-            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-                gsap.from("#home img", { opacity: 0, y: 50, duration: 1, delay: 0.5 });
-                gsap.from("#home h1", { opacity: 0, y: 30, duration: 1, delay: 0.8 });
-                gsap.from("#home p", { opacity: 0, y: 20, duration: 1, stagger: 0.3, delay: 1 });
-                gsap.from(".navbar", { opacity: 0, y: -50, duration: 1 });
-                gsap.utils.toArray("section").forEach((section, i) => {
-                    gsap.from(section.querySelectorAll("h2, p, .card, .icon-hover"), {
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 80%",
-                            toggleActions: "play none play none"
-                        },
-                        opacity: 0,
-                        x: i % 2 === 0 ? -50 : 50,
-                        duration: 0.8,
-                        stagger: 0.2
-                    });
-                });
+        // Debug Writing Section
+        window.addEventListener('load', () => {
+            const writingCards = document.getElementById('writing-cards');
+            if (!writingCards || writingCards.children.length === 0) {
+                console.error('Writing & Creative Works section is empty or not loaded');
             } else {
-                console.error('GSAP or ScrollTrigger not loaded');
+                console.log('Writing & Creative Works section loaded with', writingCards.children.length, 'cards');
+                const readMoreLink = writingCards.querySelector('a[href="./blog-post.html"]');
+                if (readMoreLink) {
+                    console.log('Read More link found for blog-post.html');
+                } else {
+                    console.error('Read More link for blog-post.html not found');
+                }
             }
-        } catch (e) {
-            console.error('GSAP Animation Error:', e);
-        }
+        });
     </script>
 </body>
 </html>
